@@ -17,6 +17,7 @@ use yii\imagine\Image;
  *
  * @property string $galleryId
  */
+
 class GalleryBehavior extends Behavior
 {
     /**
