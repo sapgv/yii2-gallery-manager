@@ -52,6 +52,7 @@ class GalleryManagerAction extends Action
         $this->type = Yii::$app->request->get('type');
         $this->behaviorName = Yii::$app->request->get('behaviorName');
         $this->galleryId = Yii::$app->request->get('galleryId');
+
         $pkNames = call_user_func([$this->types[$this->type], 'primaryKey']);
         $pkValues = explode($this->pkGlue, $this->galleryId);
 

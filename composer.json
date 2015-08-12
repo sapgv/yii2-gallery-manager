@@ -21,7 +21,7 @@
     },
     "autoload": {
         "psr-4": {
-            "zxbodya\\yii2\\galleryManager\\": ""
+            "sapgv\\yii2\\galleryManager\\": ""
         }
     }
 }

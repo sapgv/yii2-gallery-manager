@@ -113,18 +113,18 @@ class GalleryBehavior extends Behavior
     public function attach($owner)
     {
         parent::attach($owner);
-        if (!isset($this->versions['original'])) {
-            $this->versions['original'] = function ($image) {
-                return $image;
-            };
-        }
-        if (!isset($this->versions['preview'])) {
-            $this->versions['preview'] = function ($originalImage) {
-                /** @var ImageInterface $originalImage */
-                return $originalImage
-                    ->thumbnail(new Box($this->previewWidth, $this->previewHeight));
-            };
-        }
+//        if (!isset($this->versions['original'])) {
+//            $this->versions['original'] = function ($image) {
+//                return $image;
+//            };
+//        }
+//        if (!isset($this->versions['preview'])) {
+//            $this->versions['preview'] = function ($originalImage) {
+//                /** @var ImageInterface $originalImage */
+//                return $originalImage
+//                    ->thumbnail(new Box($this->previewWidth, $this->previewHeight));
+//            };
+//        }
     }
 
     public function events()
@@ -187,16 +187,22 @@ class GalleryBehavior extends Behavior
         return $this->_images;
     }
 
+    public function getOriginalImage($image) {
+        return $image;
+    }
+
     protected function getFileName($imageId, $version = 'original')
     {
-        return implode(
-            '/',
-            [
-                $this->getGalleryId(),
-                $imageId,
-                $version . '.' . $this->extension,
-            ]
-        );
+//        return implode(
+//            '/',
+//            [
+//                $this->getGalleryId(),
+//                $imageId,
+//                $version . '.' . $this->extension,
+//            ]
+//        );
+
+        return $this->getGalleryId() . '_' . $imageId . '_' . $version . '.' . $this->extension;
     }
 
     public function getUrl($imageId, $version = 'original')
@@ -235,21 +241,30 @@ class GalleryBehavior extends Behavior
 
         $originalImage = Image::getImagine()->open($path);
         //save image in original size
+        $options = [];
+        $originalImage
+                ->save($this->getFilePath($imageId, 'original'), $options);
+
+        //save image in preview size
+        $preiviewImage =  $originalImage
+            ->thumbnail(new Box($this->previewWidth, $this->previewHeight));
+        $preiviewImage
+            ->save($this->getFilePath($imageId, 'preview'), $options);
 
         //create image preview for gallery manager
-        foreach ($this->versions as $version => $fn) {
-            /** @var ImageInterface $image */
-
-            $image = call_user_func($fn, $originalImage);
-            if (is_array($image)) {
-                list($image, $options) = $image;
-            } else {
-                $options = [];
-            }
-
-            $image
-                ->save($this->getFilePath($imageId, $version), $options);
-        }
+//        foreach ($this->versions as $version => $fn) {
+//            /** @var ImageInterface $image */
+//
+//            $image = call_user_func($fn, $originalImage);
+//            if (is_array($image)) {
+//                list($image, $options) = $image;
+//            } else {
+//                $options = [];
+//            }
+//
+//            $image
+//                ->save($this->getFilePath($imageId, $version), $options);
+//        }
     }
 
     private function removeFile($fileName)
@@ -291,10 +306,17 @@ class GalleryBehavior extends Behavior
     /////////////////////////////// ========== Public Actions ============ ///////////////////////////
     public function deleteImage($imageId)
     {
-        foreach ($this->versions as $version => $fn) {
-            $filePath = $this->getFilePath($imageId, $version);
-            $this->removeFile($filePath);
-        }
+//        foreach ($this->versions as $version => $fn) {
+//            $filePath = $this->getFilePath($imageId, $version);
+//            $this->removeFile($filePath);
+//        }
+        //remove original image
+        $filePath = $this->getFilePath($imageId, 'original');
+        $this->removeFile($filePath);
+        //remove preview image
+        $filePath = $this->getFilePath($imageId, 'preview');
+        $this->removeFile($filePath);
+
         $filePath = $this->getFilePath($imageId, 'original');
         $parts = explode('/', $filePath);
         $parts = array_slice($parts, 0, count($parts) - 1);
