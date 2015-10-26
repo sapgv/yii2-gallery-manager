@@ -26,6 +26,7 @@ class GalleryImage
         $this->description = isset($props['description']) ? $props['description'] : '';
         $this->id = isset($props['id']) ? $props['id'] : '';
         $this->rank = isset($props['rank']) ? $props['rank'] : '';
+        $this->main = isset($props['main']) ? $props['main'] : '';
     }
 
     /**

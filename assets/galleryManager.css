@@ -14,7 +14,7 @@
     float: left;
     background-color: #fff;
     margin: 4px;
-    height: 178px;
+    height: 200px;
     width: 140px;
     display: block;
     padding: 4px;
@@ -27,7 +27,7 @@
     -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075); }
     .gallery-manager .photo img {
-      width: 140px;
+      width: 70px;
       height: auto; }
     .gallery-manager .photo a {
       padding-left: 8px; }
@@ -71,7 +71,7 @@
   .gallery-manager.no-name-no-desc .photo {
     height: 120px; }
   .gallery-manager .image-preview {
-    height: 88px;
+    height: 120px;
     overflow: hidden; }
   .gallery-manager .photo-select {
     position: absolute;

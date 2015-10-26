@@ -172,7 +172,7 @@ class GalleryBehavior extends Behavior
             $query = new \yii\db\Query();
 
             $imagesData = $query
-                ->select(['id', 'name', 'description', 'rank'])
+                ->select(['id', 'name', 'description', 'rank', 'main'])
                 ->from($this->tableName)
                 ->where(['type' => $this->type, 'ownerId' => $this->getGalleryId()])
                 ->orderBy(['rank' => 'asc'])
@@ -304,6 +304,37 @@ class GalleryBehavior extends Behavior
     }
 
     /////////////////////////////// ========== Public Actions ============ ///////////////////////////
+    public function mainImage($imageId) {
+
+        //delete 'main' property for all model
+        $db = \Yii::$app->db;
+
+        $db->createCommand()
+            ->update(
+                $this->tableName,
+                ['main' => false],
+                [
+//                    'id' => $imageId,
+                    'type' => $this->type,
+                    'ownerId' => $this->getGalleryId()
+                ]
+            )->execute();
+
+        //set 'main' property for all model
+        $db->createCommand()
+            ->update(
+                $this->tableName,
+                ['main' => true],
+                [
+                    'id' => $imageId,
+                    'type' => $this->type,
+                    'ownerId' => $this->getGalleryId()
+                ]
+            )->execute();
+
+
+    }
+
     public function deleteImage($imageId)
     {
 //        foreach ($this->versions as $version => $fn) {

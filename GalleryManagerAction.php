@@ -62,6 +62,9 @@ class GalleryManagerAction extends Action
         $this->behavior = $this->owner->getBehavior($this->behaviorName);
 
         switch ($action) {
+            case 'main':
+                return $this->actionMain(Yii::$app->request->post('id'));
+                break;
             case 'delete':
                 return $this->actionDelete(Yii::$app->request->post('id'));
                 break;
@@ -78,6 +81,12 @@ class GalleryManagerAction extends Action
                 throw new HttpException(400, 'Action do not exists');
                 break;
         }
+    }
+
+    protected function actionMain($id)
+    {
+        $this->behavior->mainImage($id);
+        return 'OK';
     }
 
     /**

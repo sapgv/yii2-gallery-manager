@@ -65,7 +65,8 @@ class GalleryManager extends Widget
                 'rank' => $image->rank,
                 'name' => (string)$image->name,
                 'description' => (string)$image->description,
-                'preview' => $image->getUrl('preview'),
+                'main' => (boolean)$image->main,
+                'preview' => $image->getUrl('original'),
             );
         }
 
@@ -80,6 +81,7 @@ class GalleryManager extends Widget
             'hasName' => $this->behavior->hasName ? true : false,
             'hasDesc' => $this->behavior->hasDescription ? true : false,
             'uploadUrl' => Url::to($baseUrl + ['action' => 'ajaxUpload']),
+            'mainUrl' => Url::to($baseUrl + ['action' => 'main']),
             'deleteUrl' => Url::to($baseUrl + ['action' => 'delete']),
             'updateUrl' => Url::to($baseUrl + ['action' => 'changeData']),
             'arrangeUrl' => Url::to($baseUrl + ['action' => 'order']),
